@@ -6,8 +6,10 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Cải tiến 1: Thêm Global Prefix '/api' cho mọi endpoint để khớp với đề bài Cybersoft
-  app.setGlobalPrefix('api');
+  // Cải tiến 1: Thêm Global Prefix '/api' cho mọi endpoint, loại trừ root "/" để redirect về Swagger
+  app.setGlobalPrefix('api', {
+    exclude: ['/'],
+  });
 
   // Cải tiến 2: Bật ValidationPipe toàn cục để tự động ép kiểu và văng lỗi 400 nếu truyền sai DTO
   app.useGlobalPipes(
