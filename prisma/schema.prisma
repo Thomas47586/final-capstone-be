@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model NguoiDung {
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String     @unique
+  pass_word String
+  phone     String?
+  birth_day String?
+  gender    Boolean?
+  role      String?
+  hinh_anh  String?
+  
+  deletedBY Int       @default(0)
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime? @db.Timestamp(0)
+  createdAt DateTime  @default(now()) @db.Timestamp(0)
+  updatedAT DateTime  @default(now()) @db.Timestamp(0)
+  
+  DatPhong  DatPhong[]
+  BinhLuan  BinhLuan[]
+}
+
+model Phong {
+  id        Int        @id @default(autoincrement())
+  ten_phong String
+  khach     Int
+  phong_ngu Int
+  giuong    Int
+  phong_tam Int
+  mo_ta     String
+  gia_tien  Int
+  may_giat  Boolean
+  ban_la    Boolean
+  tivi      Boolean
+  dieu_hoa  Boolean
+  wifi      Boolean
+  bep       Boolean
+  do_xe     Boolean
+  ho_boi    Boolean
+  ban_ui    Boolean
+  hinh_anh  String?
+  ma_vi_tri Int
+  
+  deletedBY Int       @default(0)
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime? @db.Timestamp(0)
+  createdAt DateTime  @default(now()) @db.Timestamp(0)
+  updatedAT DateTime  @default(now()) @db.Timestamp(0)
+  
+  ViTri     ViTri      @relation(fields: [ma_vi_tri], references: [id])
+  DatPhong  DatPhong[]
+  BinhLuan  BinhLuan[]
+}
+
+model ViTri {
+  id         Int     @id @default(autoincrement())
+  ten_vi_tri String
+  tinh_thanh String
+  quoc_gia   String
+  hinh_anh   String?
+  
+  deletedBY Int       @default(0)
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime? @db.Timestamp(0)
+  createdAt DateTime  @default(now()) @db.Timestamp(0)
+  updatedAT DateTime  @default(now()) @db.Timestamp(0)
+  
+  Phong      Phong[]
+}
+
+model DatPhong {
+  id             Int       @id @default(autoincrement())
+  ma_phong       Int
+  ngay_den       DateTime
+  ngay_di        DateTime
+  so_luong_khach Int
+  ma_nguoi_dat   Int
+  
+  deletedBY Int       @default(0)
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime? @db.Timestamp(0)
+  createdAt DateTime  @default(now()) @db.Timestamp(0)
+  updatedAT DateTime  @default(now()) @db.Timestamp(0)
+  
+  Phong          Phong     @relation(fields: [ma_phong], references: [id])
+  NguoiDung      NguoiDung @relation(fields: [ma_nguoi_dat], references: [id])
+}
+
+model BinhLuan {
+  id                 Int       @id @default(autoincrement())
+  ma_phong           Int
+  ma_nguoi_binh_luan Int
+  ngay_binh_luan     DateTime
+  noi_dung           String
+  sao_binh_luan      Int
+  
+  deletedBY Int       @default(0)
+  isDeleted Boolean   @default(false)
+  deletedAt DateTime? @db.Timestamp(0)
+  createdAt DateTime  @default(now()) @db.Timestamp(0)
+  updatedAT DateTime  @default(now()) @db.Timestamp(0)
+  
+  Phong              Phong     @relation(fields: [ma_phong], references: [id])
+  NguoiDung          NguoiDung @relation(fields: [ma_nguoi_binh_luan], references: [id])
+}
