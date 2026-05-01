@@ -1,12 +1,11 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, Redirect } from '@nestjs/common';
+import { Public } from './common/guards/jwt-auth.guard';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
+  // Redirect từ root "/" về "/swagger" để tiện truy cập
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
+  @Public()
+  @Redirect('/swagger', 301)
+  redirectToSwagger() {}
 }

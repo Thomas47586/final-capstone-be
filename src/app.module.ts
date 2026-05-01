@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { PrismaModule } from './modules-system/prisma/prisma.module';
 import { AuthModule } from './modules-api/auth/auth.module';
 import { ViTriModule } from './modules-api/vi-tri/vi-tri.module';
@@ -23,7 +22,6 @@ import { ACCESS_TOKEN_SECRET } from './common/constants/app.constant';
     PhongModule,
     DatPhongModule,
     BinhLuanModule,
-    // Đăng ký JwtModule ở root để JwtAuthGuard dùng được
     JwtModule.register({
       secret: ACCESS_TOKEN_SECRET,
       signOptions: { expiresIn: '7d' },
@@ -31,7 +29,6 @@ import { ACCESS_TOKEN_SECRET } from './common/constants/app.constant';
   ],
   controllers: [AppController],
   providers: [
-    AppService,
     TokenService,
     {
       // Áp dụng Guard toàn cục: mọi API đều cần token, trừ khi có @Public()
